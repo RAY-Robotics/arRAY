@@ -1,4 +1,4 @@
-function plot_environment(env, rack_pos, platform_pos)
+function [h_parcel] = Environment_Plotting(env, rack_pos, platform_pos)
 % PLOT_ENVIRONMENT Draws the dual-shelf environment, parcel, and platform.
 %
 % Inputs:
@@ -6,10 +6,13 @@ function plot_environment(env, rack_pos, platform_pos)
 %        (e.g., env.aisle_width, env.shelf_length, etc.)
 %   rack_pos: The [x,y,z] coordinate of the target parcel
 %   platform_pos: The [x,y,z] coordinate of the drop-off platform
+%
+% Outputs:
+%   h_parcel: A handle to the parcel plot object, so it can be moved
 
 % --- Plot the parcel ---
 % This is the specific target for the gripper
-plot3(rack_pos(1), rack_pos(2), rack_pos(3), 's', ...
+h_parcel = plot3(rack_pos(1), rack_pos(2), rack_pos(3), 's', ...
     'MarkerSize', 12, 'MarkerFaceColor', [0.8 0.5 0.2], 'MarkerEdgeColor', 'k');
 text(rack_pos(1), rack_pos(2), rack_pos(3) + 0.2, 'Parcel', 'FontSize', 10, 'HorizontalAlignment', 'center');
 
@@ -62,4 +65,3 @@ function draw_shelf(name, y_pos, len_x, h_z, depth, num_x, num_z)
     
     text(len_x/2, y_pos - sign(y_pos)*0.2, h_z + 0.2, name, 'HorizontalAlignment', 'center');
 end
-

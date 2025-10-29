@@ -132,6 +132,12 @@ move_time = 2.0;   % Time for a long move
 short_move_time = 1.0; % Time for up/down/sideways moves
 is_holding_parcel = false; % State variable
 
+% --- 7. SIMULATION PARAMETERS ---
+time_step = 0.05;  % Simulation time step
+move_time = 2.0;   % Time for a long move
+short_move_time = 1.0; % Time for up/down/sideways moves
+is_holding_parcel = false; % State variable
+
 % --- 7a. NEW: ADD START BUTTON AND WAIT ---
 disp('Simulation ready. Press "Start" in the figure window to begin.');
 h_start_button = uicontrol('Style', 'pushbutton', 'String', 'Start Simulation', ...
