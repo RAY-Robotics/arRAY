@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dual Motor Controller</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: sans-serif; text-align: center; padding-top: 50px; background-color: #222; color: white; }
+    button {
+      width: 150px; height: 80px; font-size: 20px; margin: 10px;
+      border: none; border-radius: 10px; cursor: pointer; color: white;
+    }
+    .fwd { background-color: #4CAF50; } /* Green */
+    .stop { background-color: #f44336; } /* Red */
+    .back { background-color: #2196F3; } /* Blue */
+    button:active { opacity: 0.7; transform: scale(0.98); }
+    .status { margin-top: 20px; color: #aaa; }
+  </style>
+</head>
+<body>
+
+  <h1>Dual ESP32 Controller</h1>
+  
+  <div>
+    <button class="fwd" onclick="sendCommand('forward')">FORWARD</button>
+  </div>
+  <div>
+    <button class="stop" onclick="sendCommand('stop')">STOP</button>
+  </div>
+  <div>
+    <button class="back" onclick="sendCommand('backward')">BACKWARD</button>
+  </div>
+
+  <div class="status" id="log">Status: Ready</div>
+
+  <script>
+    // --- ENTER YOUR ESP32 IP ADDRESSES HERE ---
+    const esp1 = "http://10.0.0.3/"; // Replace with IP of Left ESP
+    const esp2 = "http://10.0.0.235/"; // Replace with IP of Right ESP
+
+    function sendCommand(action) {
+      document.getElementById('log').innerText = "Sending: " + action + "...";
+      
+      // Send command to ESP #1
+      fetch(esp1 + action).catch(e => console.log("ESP1 Error: " + e));
+      
+      // Send command to ESP #2
+      fetch(esp2 + action).catch(e => console.log("ESP2 Error: " + e));
+    }
+  </script>
+
+</body>
+</html>
