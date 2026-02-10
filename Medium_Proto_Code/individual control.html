@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dual Motor Controller</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { 
+      font-family: sans-serif; 
+      text-align: center; 
+      padding: 20px; 
+      background-color: #222; 
+      color: white; 
+    }
+
+    /* Container to hold the control panels */
+    .control-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    /* Individual panels */
+    .panel {
+      border: 1px solid #444;
+      background-color: #333;
+      padding: 20px;
+      border-radius: 15px;
+      width: 300px;
+    }
+
+    h2 { margin-top: 0; font-size: 1.2rem; color: #ddd; }
+
+    button {
+      width: 100%; 
+      height: 60px; 
+      font-size: 18px; 
+      margin: 5px 0;
+      border: none; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      color: white;
+      font-weight: bold;
+    }
+
+    .fwd { background-color: #4CAF50; } /* Green */
+    .stop { background-color: #f44336; } /* Red */
+    .back { background-color: #2196F3; } /* Blue */
+    
+    button:active { opacity: 0.7; transform: scale(0.98); }
+    
+    .status { margin-top: 20px; color: #aaa; font-style: italic; }
+
+    /* Make the "Both" section stand out */
+    .master-panel {
+      border: 2px solid #4CAF50;
+      width: 100%;
+      max-width: 620px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Dual ESP32 Controller</h1>
+  
+  <div class="control-container">
+
+    <!-- MASTER CONTROLS (Both Motors) -->
+    <div class="panel master-panel">
+      <h2>ALL MOTORS (Drive Straight)</h2>
+      <button class="fwd" onclick="sendBoth('forward')">FORWARD</button>
+      <button class="stop" onclick="sendBoth('stop')">STOP</button>
+      <button class="back" onclick="sendBoth('backward')">BACKWARD</button>
+    </div>
+
+    <!-- LEFT MOTOR CONTROLS -->
+    <div class="panel">
+      <h2>Left Motor (ESP 1)</h2>
+      <p style="font-size:12px; color:#888;">IP: 10.44.100.23</p>
+      <button class="fwd" onclick="sendESP1('forward')">Forward</button>
+      <button class="stop" onclick="sendESP1('stop')">Stop</button>
+      <button class="back" onclick="sendESP1('backward')">Backward</button>
+    </div>
+
+    <!-- RIGHT MOTOR CONTROLS -->
+    <div class="panel">
+      <h2>Right Motor (ESP 2)</h2>
+      <p style="font-size:12px; color:#888;">IP: 10.44.208.112</p>
+      <button class="fwd" onclick="sendESP2('forward')">Forward</button>
+      <button class="stop" onclick="sendESP2('stop')">Stop</button>
+      <button class="back" onclick="sendESP2('backward')">Backward</button>
+    </div>
+
+  </div>
+
+  <div class="status" id="log">Status: Ready</div>
+
+  <script>
+    // --- IP CONFIGURATION ---
+    const esp1_ip = "http://10.44.100.23/"; 
+    const esp2_ip = "http://10.44.208.112/";
+
+    // Helper function to update status text
+    function logStatus(msg) {
+      document.getElementById('log').innerText = msg;
+    }
+
+    // --- Control Functions ---
+
+    // 1. Control Left Only
+    function sendESP1(action) {
+      logStatus("Left Motor: " + action);
+      fetch(esp1_ip + action).catch(e => console.log("ESP1 Error: " + e));
+    }
+
+    // 2. Control Right Only
+    function sendESP2(action) {
+      logStatus("Right Motor: " + action);
+      fetch(esp2_ip + action).catch(e => console.log("ESP2 Error: " + e));
+    }
+
+    // 3. Control Both (Master)
+    function sendBoth(action) {
+      logStatus("Both Motors: " + action);
+      // Send to both simultaneously
+      fetch(esp1_ip + action).catch(e => console.log("ESP1 Error: " + e));
+      fetch(esp2_ip + action).catch(e => console.log("ESP2 Error: " + e));
+    }
+  </script>
+
+</body>
+</html>
